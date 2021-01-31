@@ -20,17 +20,6 @@ class _GoogleMapsState extends State<GoogleMaps> {
   @override
   void initState() {
     super.initState();
-
-    // 現在位置の取得
-    _getLocation();
-
-    // 現在位置の変化を監視
-    _locationService.onLocationChanged().listen((LocationData result) async {
-      setState(() {
-        _currLocation = LatLng(result.latitude, result.longitude);
-        print('setState:$_currLocation');
-      });
-    });
   }
 
   void _getLocation() async {
@@ -48,6 +37,15 @@ class _GoogleMapsState extends State<GoogleMaps> {
   Widget build(BuildContext context) {
     print('build:$_currLocation');
     if (_currLocation == null) {
+      // 現在位置の取得
+      _getLocation();
+      // 現在位置の変化を監視
+      _locationService.onLocationChanged.listen((LocationData result) async {
+        setState(() {
+          _currLocation = LatLng(result.latitude, result.longitude);
+          print('setState:$_currLocation');
+        });
+      });
       return Scaffold();
     } else {
       return MaterialApp(
